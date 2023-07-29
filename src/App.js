@@ -13,6 +13,7 @@ import { SnackbarProvider } from "notistack";
 import AdduserPage from "./pages/AddUserPage";
 import RemoveUser from "./pages/RemoveAuthorizeUser";
 import ContractPage from "./pages/ContractPage";
+import StatusPage from "./pages/StatusPage";
 const HeaderContainer = styled.header`
   background-color: #f2f2f2;
   padding: 20px;
@@ -94,6 +95,7 @@ const App = () => {
             <Route path="/adduser" element={<AdduserPage />} />
             <Route path="/remove/user" element={<RemoveUser />} />
             <Route path="/contract" element={<ContractPage />} />
+            <Route path="/status" element={<StatusPage />} />
           </Routes>
         </Router>
       </SnackbarProvider>

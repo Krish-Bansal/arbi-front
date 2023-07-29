@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import DynamicButton from "../components/Molecules/Button/DynamicButton";
+import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   display: flex;
 `;
@@ -17,6 +18,10 @@ const ButtonColumn = styled.div`
   gap: 15px;
 `;
 const AuthorizePage = () => {
+  const navigate = useNavigate()
+  const handleClick = ()=>{
+    navigate('/contract')
+  }
   return (
     <>
       <ButtonContainer>
@@ -24,6 +29,7 @@ const AuthorizePage = () => {
           text="Generate a Contract"
           backgroundColor="#808080"
           textColor="#ffffff"
+          onClick={handleClick}
         />
         <DynamicButton
           text="Edit Profile"

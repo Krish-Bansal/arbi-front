@@ -6,6 +6,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/requestMethod";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 const AppContainer = styled.div`
   max-width: 400px;
   margin: 0 auto;
@@ -36,6 +37,7 @@ const TextContainer = styled.div`
 `;
 
 const ContractPage = () => {
+  const navigate = useNavigate()
   const [contractData, setContractData] = useState([]);
   const [formData, setFormData] = useState({
     selectedSeller: "",
@@ -104,7 +106,9 @@ const ContractPage = () => {
       Amendment: formData?.selectedAmendment,
       disputeResolution: formData?.selectedDisputeResolution,
     });
-    console.log(userData);
+    if(userData){
+      navigate('/status')
+    }
   };
 
   // Event handlers for changes

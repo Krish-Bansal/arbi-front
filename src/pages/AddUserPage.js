@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Button } from "./SignUp";
 import axios from "axios";
 import { BASE_URL } from "../utils/requestMethod";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 // Styled Container component
 const Form = styled.form`
@@ -48,6 +50,8 @@ const ImageUploadLabel = styled.label`
 
 // Main Component
 function AdduserPage() {
+  const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar();
   const [formValues, setFormValues] = useState({nameOfUser: '', aadharNo: '', emailId:'', whatsAppNo: '', nickName: ''})
   const handleChange = async (e) => {
     setFormValues({...formValues, [e.target.name]: e.target.value});
@@ -56,7 +60,10 @@ function AdduserPage() {
     e.preventDefault()
     const data = await axios.post(`${BASE_URL}/authorize/create`, formValues);
     console.log("hi dataaa", data);
-
+    if(data){
+      enqueueSnackbar("sign up successfully!, please check your mail")
+      navigate('/login')
+    }
   }
   return (
     <Form onSubmit={handleSubmit}>
