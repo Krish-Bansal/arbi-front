@@ -103,6 +103,7 @@ const SignupForm = () => {
     if (attchmentData?.password !== attchmentData?.retypePassword) {
       enqueueSnackbar("password doesn't match with retype password!");
     } else {
+      console.log(attchmentData)
       const data = await axios.post(`${BASE_URL}/user/create`, {
         registerAs: attchmentData?.register,
         nameOfEntity: attchmentData?.nameOfEntity,
@@ -134,7 +135,6 @@ const SignupForm = () => {
   const handleOptionSelect = (event) => {
     setAttachmentData({ ...attchmentData, typeOfEntity: event.target.value });
     console.log("Selected option:", event);
-    // Do something with the selected option
   };
 
   const onGetData = async (name, datafile) => {

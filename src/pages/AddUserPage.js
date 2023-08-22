@@ -50,21 +50,48 @@ const ImageUploadLabel = styled.label`
 
 // Main Component
 function AdduserPage() {
+  const [gstImage, setGstImage] = useState(null);
+
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar();
-  const [formValues, setFormValues] = useState({nameOfUser: '', aadharNo: '', emailId:'', whatsAppNo: '', nickName: ''})
+  const [formValues, setFormValues] = useState({ nameOfUser: '', aadharNo: '', emailId: '', whatsAppNo: '', nickName: '' })
   const handleChange = async (e) => {
-    setFormValues({...formValues, [e.target.name]: e.target.value});
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
   };
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-    const data = await axios.post(`${BASE_URL}/authorize/create`, formValues);
-    console.log("hi dataaa", data);
-    if(data){
-      enqueueSnackbar("sign up successfully!, please check your mail")
-      navigate('/login')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Retrieve the token from localStorage
+    const token = localStorage.getItem('token');
+
+    const updatedFormValues = { ...formValues, authorityLetter: gstImage };
+
+    // Set the Authorization header with the token
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    try {
+      const response = await axios.post(`${BASE_URL}/authorize/create`, updatedFormValues, { headers });
+
+      if (response.data) {
+        enqueueSnackbar("Sign up successful! Please check your email.");
+        navigate('/masterpage');
+      }
+    } catch (error) {
+      // Handle error here
     }
-  }
+  };
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file)
+    const filePath = await axios.post(`${BASE_URL}/user/file-upload`, formData)
+    console.log(filePath)
+    // getTheEachFileData(name, filePath)
+    setGstImage(filePath.data.filename)
+  };
   return (
     <Form onSubmit={handleSubmit}>
       <InputContainer>
@@ -74,7 +101,7 @@ function AdduserPage() {
 
       <InputContainer>
         <label htmlFor="aadharNo">Aadhar No. of Authorized User</label>
-        <Input type="text" id="aadharNo" name="aadharNo" onChange={handleChange}/>
+        <Input type="text" id="aadharNo" name="aadharNo" onChange={handleChange} />
       </InputContainer>
 
       <InputContainer>
@@ -89,23 +116,23 @@ function AdduserPage() {
 
       <InputContainer>
         <label htmlFor="nickName">Nick Name, if any:</label>
-        <Input type="text" id="nickName" name="nickName" onChange={handleChange}/>
+        <Input type="text" id="nickName" name="nickName" onChange={handleChange} />
       </InputContainer>
       <InputContainer>
-      <label htmlFor="authorityLetter">Nick Name, if any :</label>
-      <ImageUploadContainer>
-        <ImageUploadInput
-          type="file"
-          id="authorityLetter"
-          accept="image/*"
-          // name={gstImage}
-          // onChange={handleImageUpload}
-        />
-        <ImageUploadLabel htmlFor="authorityLetter">
-          Browse
-        </ImageUploadLabel>
-        {/* <span>{gstImage}</span> */}
-      </ImageUploadContainer>
+        <label htmlFor="authorityLetter">Authority Letter :</label>
+        <ImageUploadContainer>
+          <ImageUploadInput
+            type="file"
+            id="authorityLetter"
+            accept="image/*"
+            name="authorityLetter"
+            onChange={handleImageUpload}
+          />
+          <ImageUploadLabel htmlFor="authorityLetter">
+            Browse
+          </ImageUploadLabel>
+          <span>{gstImage}</span>
+        </ImageUploadContainer>
       </InputContainer>
       <Button type="submit">Submit</Button>
     </Form>

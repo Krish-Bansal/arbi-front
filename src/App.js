@@ -14,6 +14,12 @@ import AdduserPage from "./pages/AddUserPage";
 import RemoveUser from "./pages/RemoveAuthorizeUser";
 import ContractPage from "./pages/ContractPage";
 import StatusPage from "./pages/StatusPage";
+import EmailVerificationPage from "./pages/EmailVerification";
+import ListOfUsers from "./pages/ListOfUsers";
+import Contract from "./pages/contract";
+import AcceptContractPage from "./pages/acceptContract";
+import RejectContractPage from "./pages/rejectContract";
+import ChangeContractPage from "./pages/changeContract";
 const HeaderContainer = styled.header`
   background-color: #f2f2f2;
   padding: 20px;
@@ -80,7 +86,7 @@ const App = () => {
                 <a href="/contact">Contact Us</a>
               </NavLink>
               <NavLink>
-                <a href="/signin">Sign In/Sign Up</a>
+                <a href="/login">Sign In/Sign Up</a>
               </NavLink>
             </NavLinks>
             {/* <SignInUpButton>Sign In/Sign Up</SignInUpButton> */}
@@ -96,6 +102,12 @@ const App = () => {
             <Route path="/remove/user" element={<RemoveUser />} />
             <Route path="/contract" element={<ContractPage />} />
             <Route path="/status" element={<StatusPage />} />
+            <Route path="/users" element={<ListOfUsers />} />
+            <Route path="/user/email-verification" element={<EmailVerificationPage />} />
+            <Route path="/contract/:id" element={<Contract />} />
+            <Route path="/contract/accept/:id" element={<AcceptContractPage />} />
+            <Route path="/contract/reject/:id" element={<RejectContractPage />} />
+            <Route path="/contract/change/:id" element={<ChangeContractPage />} />
           </Routes>
         </Router>
       </SnackbarProvider>

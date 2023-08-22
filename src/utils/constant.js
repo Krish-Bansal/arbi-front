@@ -27,26 +27,26 @@ const states = [
   { key: "Tripura", value: 26 },
   { key: "Uttar Pradesh", value: 27 },
   { key: "West Bengal", value: 28 },
-//   { key: "Gujarat", value: 29 },
+  //   { key: "Gujarat", value: 29 },
 ];
 
 const registerData = [
   { key: "Trader", value: 1 },
   { key: "Broker", value: 2 },
-  { key: "Both Trader", value: 3 },
+  { key: "Both Trader and Broker", value: 3 },
 ];
 
 const typeEntity = [
-    { key: "Government Department", value: 1 },
-    { key: "Public Limited", value: 2 },
-    { key: "Private Limited", value: 3 },
-    { key: "Limited Liability Firm", value: 4 },
-    { key: "Partnership Firm", value: 5 },
-    { key: "Co-operative Society", value: 6 },
-    { key: "Society", value: 7 },
-    { key: "Trust", value: 8 },
-    { key: "Public Sector Undertaking", value: 9 },
-  ];
+  { key: "Government Department", value: 1 },
+  { key: "Public Limited", value: 2 },
+  { key: "Private Limited", value: 3 },
+  { key: "Limited Liability Firm", value: 4 },
+  { key: "Partnership Firm", value: 5 },
+  { key: "Co-operative Society", value: 6 },
+  { key: "Society", value: 7 },
+  { key: "Trust", value: 8 },
+  { key: "Public Sector Undertaking", value: 9 },
+];
 module.exports = {
   states,
   registerData,

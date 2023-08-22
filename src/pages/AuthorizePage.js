@@ -18,8 +18,11 @@ const ButtonColumn = styled.div`
   gap: 15px;
 `;
 const AuthorizePage = () => {
+  const handleLogout = () => {
+    localStorage.clear()
+  }
   const navigate = useNavigate()
-  const handleClick = ()=>{
+  const handleClick = () => {
     navigate('/contract')
   }
   return (
@@ -40,6 +43,7 @@ const AuthorizePage = () => {
           text="log Out"
           backgroundColor="#0000ff"
           textColor="#ffffff"
+          onClick={handleLogout}
         />
       </ButtonContainer>
       <ButtonColumn>
@@ -58,7 +62,7 @@ const AuthorizePage = () => {
           backgroundColor="#808080"
           textColor="#ffffff"
         />
-         <DynamicButton
+        <DynamicButton
           text="Amendment to Trade Rules for Approval"
           backgroundColor="#808080"
           textColor="#ffffff"

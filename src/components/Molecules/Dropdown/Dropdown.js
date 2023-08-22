@@ -25,11 +25,15 @@ const Dropdown = ({ label, options, value, onChange, name }) => {
     <DropdownContainer>
       <Label>{label}</Label>
       <Select value={value} onChange={onChange} name={name}>
-        {options.map((option) => (
-          <Option key={option} value={option}>
-            {option}
-          </Option>
-        ))}
+        <option value="">Select an option</option>
+        {options && options.length > 0
+          ? options.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))
+          : <option value="" disabled>No sellers available</option>
+        }
       </Select>
     </DropdownContainer>
   );

@@ -7,6 +7,7 @@ import { BASE_URL } from "../utils/requestMethod";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
+import CustomDropdown from "../components/Molecules/Dropdown/CustomDropDown";
 const AppContainer = styled.div`
   max-width: 400px;
   margin: 0 auto;
@@ -43,6 +44,7 @@ const ContractPage = () => {
     selectedSeller: "",
     selectedSellerRepresentative: "",
     selectedBuyer: "",
+    selectedBuyerEmail: "",
     selectedBuyerRepresentative: "",
     selectedCommodity: "",
     selectedQualityParameters: "",
@@ -67,19 +69,28 @@ const ContractPage = () => {
     selectedApplicableRules: "",
     selectedAmendment: "",
     selectedDisputeResolution: "",
+    selectedMPIN: "",
   });
-
+  console.log(formData)
   const handleDateChange = (date) => {
     setFormData({ ...formData, selectedDeliveryPeriod: date });
   };
   // Event handler for form submission
   const handleSubmit = async (e) => {
+    const token = localStorage.getItem('token');
+
+
+    // Set the Authorization header with the token
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
     e.preventDefault();
-    console.log(formData);
     const userData = await axios.post(`${BASE_URL}/contract/create`, {
       seller: formData?.selectedSeller,
       sellerRepresentative: formData?.selectedSellerRepresentative,
       buyer: formData?.selectedBuyer,
+      buyeremail: formData?.selectedBuyerEmail,
       buyerRepresentative: formData?.selectedBuyerRepresentative,
       commodity: formData?.selectedCommodity,
       qualityParameters: formData?.selectedQualityParameters,
@@ -105,8 +116,9 @@ const ContractPage = () => {
       applicableRules: formData?.selectedApplicableRules,
       Amendment: formData?.selectedAmendment,
       disputeResolution: formData?.selectedDisputeResolution,
-    });
-    if(userData){
+      MPIN: formData?.selectedMPIN
+    }, { headers });
+    if (userData) {
       navigate('/status')
     }
   };
@@ -121,59 +133,88 @@ const ContractPage = () => {
     }));
   };
 
+  const [selleroptions, setSellerOptions] = useState([]);
+  const [authOptions, setAuthOptions] = useState([]);
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/user/fetch`)
-      .then((res) => {
-        console.log(res);
-        setContractData(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    fetchOptions();
   }, []);
+  useEffect(() => {
+    fetchAuths();
+  }, []);
+
+  const fetchOptions = async () => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const response = await axios.get(`${BASE_URL}/contract/admin-names`, { headers });
+      setSellerOptions(response.data.data);
+    } catch (error) {
+      console.error('Error fetching options:', error);
+    }
+  };
+  const fetchAuths = async () => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    try {
+      const response = await axios.get(`${BASE_URL}/contract/auth-names`, { headers });
+      setAuthOptions(response.data.data);
+    } catch (error) {
+      console.error('Error fetching options:', error);
+    }
+  };
 
   return (
     <AppContainer>
       <Form onSubmit={handleSubmit}>
         <Dropdown
           label="Seller"
-          options={["abc", "bcd", "cdf"]}
           value={formData?.selectedSeller}
           onChange={handleChange}
           name="selectedSeller"
+          options={selleroptions}
         />
         <Dropdown
           label="Seller's Representative"
-          options={["abc", "bcd", "cdf"]}
+          options={authOptions}
           value={formData?.selectedSellerRepresentative}
           onChange={handleChange}
           name="selectedSellerRepresentative"
         />
+        <TextInput
+          label="Buyer's Email"
+          value={formData?.selectedBuyerEmail}
+          onChange={handleChange}
+          name="selectedBuyerEmail"
+        />
         <Dropdown
           label="Buyer"
-          options={["abc", "bcd", "cdf"]}
+          options={selleroptions}
           value={formData?.selectedBuyer}
           onChange={handleChange}
           name="selectedBuyer"
         />
         <Dropdown
           label="Buyer's Representative"
-          options={["abc", "bcd"]}
+          options={authOptions}
           value={formData?.selectedBuyerRepresentative}
           onChange={handleChange}
           name="selectedBuyerRepresentative"
         />
-        <Dropdown
+        <CustomDropdown
           label="Commodity"
-          options={["abc", "bcd", "cdf"]}
+          options={["commodity1", "commodity2", "commodity3"]}
           value={formData?.selectedCommodity}
           onChange={handleChange}
           name="selectedCommodity"
         />
-        <Dropdown
+
+        <CustomDropdown
           label="Quality Parameters"
-          options={["abc", "bcd", "cdf"]}
+          options={["Quality1", "Quality2", "Quality3"]}
           value={formData?.selectedQualityParameters}
           onChange={handleChange}
           name="selectedQualityParameters"
@@ -325,6 +366,18 @@ const ContractPage = () => {
           value={formData?.selectedDisputeResolution}
           onChange={handleChange}
           name="selectedDisputeResolution"
+        />
+        <ul>
+          <li>
+            <strong>Please Input Your MPIN below to digitally sign the contract</strong>
+
+          </li>
+        </ul>
+        <TextInput
+          label="MPIN"
+          value={formData?.MPIN}
+          onChange={handleChange}
+          name="selectedMPIN"
         />
         <SubmitButton type="submit">Submit</SubmitButton>
       </Form>

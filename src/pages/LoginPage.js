@@ -14,23 +14,27 @@ function LoginAdmin() {
   const [authLogin, setAuthLogin] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await axios.post(`${BASE_URL}/user/login`, formValues)
+    const data = await axios.post(`${BASE_URL}/user/login`, formValues);
     try {
-      console.log(data)
-      if(data){
-        enqueueSnackbar("login successfully!")
-        navigate('/masterpage')
+      if (data) {
+        // Assuming the token is available in the response as data.token
+        const res = data.data;
+        const token = res.data;        // Store the token in localStorage
+        localStorage.setItem('token', token);
+        console.log(localStorage)
+        enqueueSnackbar('Login successfully!');
+        navigate('/masterpage');
       }
     } catch (error) {
       enqueueSnackbar("some error occured!")
     }
   };
-  const handleSubmitAuth = async(e)=>{
+  const handleSubmitAuth = async (e) => {
     e.preventDefault();
     const data = await axios.post(`${BASE_URL}/authorize/login`, formValues)
     try {
       console.log(data)
-      if(data){
+      if (data) {
         enqueueSnackbar("login successfully!")
         navigate('/authorize')
       }
@@ -94,9 +98,13 @@ function LoginAdmin() {
                 <div class="">
                   <div
                     class="col-md-8"
-                    // style={{ padding: '20px 90px 20px 90px' }}
+                  // style={{ padding: '20px 90px 20px 90px' }}
                   >
                     <div class="mb-4">
+                      <p>
+                        {authLogin ? "Authorized User" : "Master"} Account{" "}
+                      </p>
+
                       <h3>Sign In</h3>
                       <p class="mb-4">
                         Lorem ipsum dolor sit amet elit. Sapiente sit aut eos
@@ -123,7 +131,7 @@ function LoginAdmin() {
                           value={formValues.password}
                           onChange={handleChange}
                           class="form-control"
-                          placeholder={authLogin ? "mPassword": "password"}
+                          placeholder={authLogin ? "mPassword" : "password"}
                           name="password"
                           focused
                           required
@@ -145,19 +153,22 @@ function LoginAdmin() {
                       />}
                     </form>
                     <p style={{ margin: 15 }}>
-            login with?
-            <u
-              onClick={() => setAuthLogin(!authLogin)}
-              style={{
-                color: "lightskyblue",
-                cursor: "pointer",
-                textDecoration: "none",
-                marginLeft: "5px",
-              }}
-            >
-            {!authLogin ? "Auth Login" : "AdminLogin"}
-            </u>
-          </p>
+
+                      <u
+                        onClick={() => setAuthLogin(!authLogin)}
+                        style={{
+                          color: "lightskyblue",
+                          cursor: "pointer",
+                          textDecoration: "none",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        <p>
+                          {authLogin ? "Master" : "Authorised User"} Account Login?{" "}
+                          {/* <a href={authLogin ? "/auth-login" : "/master-login"}>Login!</a> */}
+                        </p>
+                      </u>
+                    </p>
                   </div>
                 </div>
               </div>

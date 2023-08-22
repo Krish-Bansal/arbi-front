@@ -16,12 +16,20 @@ const ButtonColumn = styled.div`
   gap: 15px;
 `;
 const MasterProfilePage = () => {
+  console.log(localStorage)
+  const handleLogOut = () => {
+    localStorage.clear();
+    console.log(localStorage)
+  }
   const navigate = useNavigate()
-  const handleClick = async()=>{
+  const handleClick = async () => {
     navigate('/adduser')
   }
-  const RemoveUserClick = async()=>{
+  const RemoveUserClick = async () => {
     navigate('/remove/user')
+  }
+  const ListOfUsersClick = async () => {
+    navigate('/users')
   }
   return (
     <>
@@ -30,6 +38,7 @@ const MasterProfilePage = () => {
           text="List of Authorized Users"
           backgroundColor="#ff0000"
           textColor="#ffffff"
+          onClick={ListOfUsersClick}
         />
         <DynamicButton
           text="Edit Profile"
@@ -40,6 +49,7 @@ const MasterProfilePage = () => {
           text="Sign Out"
           backgroundColor="#0000ff"
           textColor="#ffffff"
+          onClick={handleLogOut}
         />
       </ButtonContainer>
       <ButtonColumn>
