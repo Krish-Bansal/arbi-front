@@ -20,6 +20,9 @@ import Contract from "./pages/contract";
 import AcceptContractPage from "./pages/acceptContract";
 import RejectContractPage from "./pages/rejectContract";
 import ChangeContractPage from "./pages/changeContract";
+import { OpenRoutes } from "./routing/OpenRoutes";
+import { PrivateAuth } from "./routing/PrivateAuth";
+import { PrivateAdmin } from "./routing/PrivateAdmin";
 const HeaderContainer = styled.header`
   background-color: #f2f2f2;
   padding: 20px;
@@ -72,35 +75,41 @@ const App = () => {
       <SnackbarProvider>
         <HeaderContainer>
           <Nav>
-            <NavLinks>
-              <NavLink>
-                <a href="/">Home</a>
-              </NavLink>
-              <NavLink>
-                <a href="/about">About Us</a>
-              </NavLink>
-              <NavLink>
-                <a href="/rules">Rules</a>
-              </NavLink>
-              <NavLink>
-                <a href="/contact">Contact Us</a>
-              </NavLink>
-              <NavLink>
-                <a href="/login">Sign In/Sign Up</a>
-              </NavLink>
-            </NavLinks>
+            <OpenRoutes>
+              <NavLinks>
+                <NavLink>
+                  <a href="/">Home</a>
+                </NavLink>
+                <NavLink>
+                  <a href="/about">About Us</a>
+                </NavLink>
+                <NavLink>
+                  <a href="/rules">Rules</a>
+                </NavLink>
+                <NavLink>
+                  <a href="/contact">Contact Us</a>
+                </NavLink>
+                <NavLink>
+                  <a href="/login">Sign In/Sign Up</a>
+                </NavLink>
+              </NavLinks>
+            </OpenRoutes>
             {/* <SignInUpButton>Sign In/Sign Up</SignInUpButton> */}
           </Nav>
         </HeaderContainer>
         <Router>
           <Routes>
             <Route path="*" element={<SignupForm />} />
-            <Route path="/masterpage" element={<MasterProfilePage />} />
-            <Route path="/authorize" element={<AuthorizePage />} />
-            <Route path="/login" element={<LoginAdmin />} />
-            <Route path="/adduser" element={<AdduserPage />} />
-            <Route path="/remove/user" element={<RemoveUser />} />
-            <Route path="/contract" element={<ContractPage />} />
+            <Route path="/masterpage" element={<PrivateAdmin><MasterProfilePage /></PrivateAdmin>} />
+            <Route path='authorize' element={<PrivateAuth>
+              <AuthorizePage />
+            </PrivateAuth>} />
+            <Route path="/" element={<LoginAdmin />} />
+            <Route path="/adduser" element={<PrivateAdmin><AdduserPage /></PrivateAdmin>} />
+            <Route path="/remove/user" element={<PrivateAdmin>
+              <RemoveUser />
+            </PrivateAdmin>} />
+            <Route path="/contract" element={<PrivateAuth><ContractPage /></PrivateAuth>} />
             <Route path="/status" element={<StatusPage />} />
             <Route path="/users" element={<ListOfUsers />} />
             <Route path="/user/email-verification" element={<EmailVerificationPage />} />

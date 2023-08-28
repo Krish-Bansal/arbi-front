@@ -20,7 +20,7 @@ function LoginAdmin() {
         // Assuming the token is available in the response as data.token
         const res = data.data;
         const token = res.data;        // Store the token in localStorage
-        localStorage.setItem('token', token);
+        localStorage.setItem('admin', token);
         console.log(localStorage)
         enqueueSnackbar('Login successfully!');
         navigate('/masterpage');
@@ -35,8 +35,13 @@ function LoginAdmin() {
     try {
       console.log(data)
       if (data) {
-        enqueueSnackbar("login successfully!")
-        navigate('/authorize')
+        // Assuming the token is available in the response as data.token
+        const res = data.data;
+        const token = res.data;        // Store the token in localStorage
+        localStorage.setItem('auth', token);
+        console.log(localStorage)
+        enqueueSnackbar('Login successfully!');
+        navigate('/authorize');
       }
     } catch (error) {
       enqueueSnackbar("some error occured!")
