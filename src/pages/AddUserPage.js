@@ -60,9 +60,8 @@ function AdduserPage() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Retrieve the token from localStorage
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('admin');
 
     const updatedFormValues = { ...formValues, authorityLetter: gstImage };
 
@@ -73,7 +72,6 @@ function AdduserPage() {
 
     try {
       const response = await axios.post(`${BASE_URL}/authorize/create`, updatedFormValues, { headers });
-
       if (response.data) {
         enqueueSnackbar("Sign up successful! Please check your email.");
         navigate('/masterpage');
