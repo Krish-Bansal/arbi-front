@@ -77,7 +77,7 @@ const ContractPage = () => {
   };
   // Event handler for form submission
   const handleSubmit = async (e) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth');
 
 
     // Set the Authorization header with the token
@@ -143,7 +143,7 @@ const ContractPage = () => {
   }, []);
 
   const fetchOptions = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth');
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -155,7 +155,7 @@ const ContractPage = () => {
     }
   };
   const fetchAuths = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth');
     const headers = {
       Authorization: `Bearer ${token}`,
     };
