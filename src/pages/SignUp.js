@@ -95,41 +95,56 @@ const SignupForm = () => {
   });
   const [attchment, setAttachment] = useState({ pan: "", entity: "", gst: "" });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("all Data", attchmentData, attchment);
-    if (!isChecked) enqueueSnackbar("please accept the terms & conditions!");
-    if (attchmentData?.password !== attchmentData?.retypePassword) {
+
+    // Disable the form and set submitting state to true
+    setIsSubmitting(true);
+
+    // ... Validation checks ...
+
+    if (!isChecked) {
+      enqueueSnackbar("please accept the terms & conditions!");
+    } else if (attchmentData?.password !== attchmentData?.retypePassword) {
       enqueueSnackbar("password doesn't match with retype password!");
     } else {
-      console.log(attchmentData)
-      const data = await axios.post(`${BASE_URL}/user/create`, {
-        registerAs: attchmentData?.register,
-        nameOfEntity: attchmentData?.nameOfEntity,
-        typeOfEntity: attchmentData?.typeOfEntity,
-        address: {
-          landmark: attchmentData?.landmark,
-          city: attchmentData?.city,
-          state: attchmentData?.state,
-          pin: attchmentData?.pin,
-        },
-        mobileNumber: attchmentData?.mobileNumber,
-        whatsAppNumber: attchmentData?.whatsAppNumber,
-        email: attchmentData?.email,
-        gstin: attchmentData?.gst,
-        gstinFile: attchment?.gst,
-        pan: attchmentData?.pan,
-        panFile: attchment?.pan,
-        entityRegistrationNo: attchmentData?.entity,
-        entityRegistrationFile: attchment?.entity,
-        userId: attchmentData?.userId,
-        password: attchmentData?.password,
-      });
-      if (data) {
-        navigate("/login");
+      try {
+        const data = await axios.post(`${BASE_URL}/user/create`, {
+          registerAs: attchmentData?.register,
+          nameOfEntity: attchmentData?.nameOfEntity,
+          typeOfEntity: attchmentData?.typeOfEntity,
+          address: {
+            landmark: attchmentData?.landmark,
+            city: attchmentData?.city,
+            state: attchmentData?.state,
+            pin: attchmentData?.pin,
+          },
+          mobileNumber: attchmentData?.mobileNumber,
+          whatsAppNumber: attchmentData?.whatsAppNumber,
+          email: attchmentData?.email,
+          gstin: attchmentData?.gst,
+          gstinFile: attchment?.gst,
+          pan: attchmentData?.pan,
+          panFile: attchment?.pan,
+          entityRegistrationNo: attchmentData?.entity,
+          entityRegistrationFile: attchment?.entity,
+          userId: attchmentData?.userId,
+          password: attchmentData?.password,
+        });
+
+        if (data) {
+          // Redirect to "/" after successful submission
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Submission failed:", error);
       }
     }
+
+    // Enable the form and set submitting state to false
+    setIsSubmitting(false);
   };
 
   const handleOptionSelect = (event) => {
@@ -307,7 +322,9 @@ const SignupForm = () => {
         </FormRow>
 
         <FormRow>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit'}
+          </Button>
         </FormRow>
       </form>
     </FormContainer>
