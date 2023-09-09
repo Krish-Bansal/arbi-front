@@ -55,7 +55,7 @@ const RemoveUser = () => {
       });
   }, []);
   const handleRemoveClick = async (authId) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('admin');
     const headers = {
       Authorization: `Bearer ${token}`,
     };
