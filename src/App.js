@@ -23,6 +23,8 @@ import ChangeContractPage from "./pages/changeContract";
 import { OpenRoutes } from "./routing/OpenRoutes";
 import { PrivateAuth } from "./routing/PrivateAuth";
 import { PrivateAdmin } from "./routing/PrivateAdmin";
+import SetMPIN from "./pages/SetMpin";
+
 const HeaderContainer = styled.header`
   background-color: #f2f2f2;
   padding: 20px;
@@ -117,9 +119,10 @@ const App = () => {
             <Route path="/contract/accept/:id" element={<AcceptContractPage />} />
             <Route path="/contract/reject/:id" element={<RejectContractPage />} />
             <Route path="/contract/change/:id" element={<ChangeContractPage />} />
+            <Route path="/set-mpin/:id" element={<SetMPIN />} />
           </Routes>
         </Router>
-      </SnackbarProvider>
+      </SnackbarProvider >
     </>
   );
 };

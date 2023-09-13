@@ -41,7 +41,7 @@ const RemoveUser = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('admin');
     const headers = {
       Authorization: `Bearer ${token}`,
     };

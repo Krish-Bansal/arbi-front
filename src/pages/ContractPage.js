@@ -347,20 +347,22 @@ const ContractPage = () => {
           name="selectedOtherTerms"
         />
         <TextContainer>
-          <TextInput
+          <Dropdown
             label="Applicable Rules"
-            value={formData?.selectedApplicableRules}
+            options={["Arbitrade Rules", "rule1", "rule2"]} // Add "Default" as the first option
+            value={formData?.selectedApplicableRules || "Arbitrade Rules"} // Set the default value
             onChange={handleChange}
             name="selectedApplicableRules"
           />
           <Dropdown
             label="Amendment"
-            options={["abc", "bcd", "cdf"]}
-            value={formData?.selectedAmendment}
+            options={["Arbitrade Arbitration", "abc", "bcd", "cdf"]} // Add "Default" as the first option
+            value={formData?.selectedAmendment || "Arbitrade Arbitration"} // Set the default value
             onChange={handleChange}
             name="selectedAmendment"
           />
         </TextContainer>
+
         <TextInput
           label="Dispute Resolution"
           value={formData?.selectedDisputeResolution}
