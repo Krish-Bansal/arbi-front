@@ -57,6 +57,7 @@ const ContractPage = () => {
     selectedDestination: "",
     selectedModeofTransport: "",
     selectedDeliveryPeriod: "",
+    selectedDeliveryPeriodto: "",
     selectedDeliveryBasis: "",
     selectedPrice: "",
     selectedPricePer: "",
@@ -71,9 +72,12 @@ const ContractPage = () => {
     selectedDisputeResolution: "",
     selectedMPIN: "",
   });
-  console.log(formData)
+  // console.log(formData)
   const handleDateChange = (date) => {
     setFormData({ ...formData, selectedDeliveryPeriod: date });
+  };
+  const handleDateChangeto = (date) => {
+    setFormData({ ...formData, selectedDeliveryPeriodto: date });
   };
   // Event handler for form submission
   const handleSubmit = async (e) => {
@@ -103,6 +107,7 @@ const ContractPage = () => {
       destination: formData?.selectedDestination,
       modeOfTransport: formData?.selectedModeofTransport,
       deliveryPeriod: formData?.selectedDeliveryPeriod,
+      deliveryPeriodto: formData?.selectedDeliveryPeriodto,
       deliveryBasis: formData?.selectedDeliveryBasis,
       price: formData?.selectedPrice,
       pricePerIns: formData?.selectedPricePer,
@@ -126,21 +131,92 @@ const ContractPage = () => {
   // Event handlers for changes
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log("hiiii", event.target);
+    // console.log("hiiii", event.target);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
+  function handleChangereq(event) {
+    const selectedSeller = event.target.value;
+    const { name, value } = event.target;
+    // console.log("hiiii", event.target);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      selectedSellerRepresentative: null
+    }));
+    // Make a request to the backend
+    axios.get(`${BASE_URL}/contract/representative`, {
+      params: {
+        selectedSeller: selectedSeller
+      }
+    })
+      .then((response) => {
+        // Handle the response data as needed
+        setAuthOptions(response.data.namesOfUser);
+        console.log(response.data.namesOfUser); // or console.log(authOptions) depending on the context
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+  function handleChangereq2(event) {
+    const selectedSeller = event.target.value;
+    const { name, value } = event.target;
+    // console.log("hiiii", event.target);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+      selectedBuyerRepresentative: null
+    }));
+    // Make a request to the backend
+    axios.get(`${BASE_URL}/contract/representative2`, {
+      params: {
+        selectedSeller: selectedSeller
+      }
+    })
+      .then((response) => {
+        // Handle the response data as needed
+        setbuyOptions(response.data.namesOfUser);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+  const handleChangeEmail = async (event) => {
+    const selectedValue = event.target.value;
+    console.log(selectedValue)
+    try {
+      const response = await axios.post(`${BASE_URL}/contract/get-email`, { selectedValue });
+      // Assuming the response from the backend includes selectedBuyeremail
+      const selectedBuyeremailFromBackend = response.data.selectedBuyeremail;
+
+      setFormData({
+        ...formData,
+        selectedBuyerRepresentative: selectedValue,
+        selectedBuyerEmail: selectedBuyeremailFromBackend,
+      });
+      // const buyeremail = selectedBuyeremailFromBackend
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle any errors here
+    }
+  };
+  console.log(formData)
+
   const [selleroptions, setSellerOptions] = useState([]);
   const [authOptions, setAuthOptions] = useState([]);
+  const [buyOptions, setbuyOptions] = useState([]);
+
   useEffect(() => {
     fetchOptions();
   }, []);
-  useEffect(() => {
-    fetchAuths();
-  }, []);
+  // useEffect(() => {
+  //   fetchAuths();
+  // }, []);
 
   const fetchOptions = async () => {
     const token = localStorage.getItem('auth');
@@ -154,59 +230,72 @@ const ContractPage = () => {
       console.error('Error fetching options:', error);
     }
   };
-  const fetchAuths = async () => {
-    const token = localStorage.getItem('auth');
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    try {
-      const response = await axios.get(`${BASE_URL}/contract/auth-names`, { headers });
-      setAuthOptions(response.data.data);
-    } catch (error) {
-      console.error('Error fetching options:', error);
+  // const fetchAuths = async () => {
+  //   const token = localStorage.getItem('auth');
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //   };
+  //   try {
+  //     const response = await axios.get(`${BASE_URL}/contract/auth-names`, { headers });
+  //     setAuthOptions(response.data.data);
+  //   } catch (error) {
+  //     console.error('Error fetching options:', error);
+  //   }
+  // };
+  const [text, setText] = useState('');
+  const maxWords = 1000;
+
+  const handleChangeText = (event) => {
+    const inputText = event.target.value;
+    const words = inputText.trim().split(/\s+/);
+    if (words.length <= maxWords) {
+      setText(inputText);
     }
   };
-
   return (
     <AppContainer>
       <Form onSubmit={handleSubmit}>
         <Dropdown
           label="Seller"
           value={formData?.selectedSeller}
-          onChange={handleChange}
+          onChange={handleChangereq}
           name="selectedSeller"
           options={selleroptions}
         />
-        <Dropdown
-          label="Seller's Representative"
-          options={authOptions}
-          value={formData?.selectedSellerRepresentative}
-          onChange={handleChange}
-          name="selectedSellerRepresentative"
-        />
-        <TextInput
+        {formData.selectedSeller && (
+          <Dropdown
+            label="Seller's Representative"
+            options={authOptions}
+            value={formData?.selectedSellerRepresentative}
+            onChange={handleChange}
+            name="selectedSellerRepresentative"
+          />
+        )}
+        {/* <TextInput
           label="Buyer's Email"
           value={formData?.selectedBuyerEmail}
           onChange={handleChange}
           name="selectedBuyerEmail"
-        />
+        /> */}
         <Dropdown
           label="Buyer"
           options={selleroptions}
           value={formData?.selectedBuyer}
-          onChange={handleChange}
+          onChange={handleChangereq2}
           name="selectedBuyer"
         />
-        <Dropdown
-          label="Buyer's Representative"
-          options={authOptions}
-          value={formData?.selectedBuyerRepresentative}
-          onChange={handleChange}
-          name="selectedBuyerRepresentative"
-        />
+        {formData.selectedBuyer && (
+          <Dropdown
+            label="Buyer's Representative"
+            options={buyOptions}
+            value={formData?.selectedBuyerRepresentative}
+            onChange={handleChangeEmail}
+            name="selectedBuyerRepresentative"
+          />
+        )}
         <CustomDropdown
           label="Commodity"
-          options={["commodity1", "commodity2", "commodity3"]}
+          options={["Arhar Whole(Red Gram)", "Moong Whole(Green Gram)", "Masoor Whole(Lentil)", "Urad Whole(Black Gram)", "Wheat", "Wheat", "Wheat", "Maize/Corn", "Chana (Bengal Gram)", "Bajra(Pearl Millet)", "Barley(Jau)", "Jowar", "Dhan(Paddy)", "Rajma(Kidney Beans)", "Ragi(Finge Millet)", "Lobia (Cowpea)", "Rice", "Mustard Seed", "Soyabean", "Jaggery", "Arhar Pulses", "Masoor Pulses", "Moong Pulse", "Urad Pulse"]}
           value={formData?.selectedCommodity}
           onChange={handleChange}
           name="selectedCommodity"
@@ -276,10 +365,17 @@ const ContractPage = () => {
         />
         <TextContainer>
           <label>Delivery Period</label>
+          <label htmlFor="">From</label>
           <DatePicker
             selected={formData?.selectedDeliveryPeriod}
             onChange={handleDateChange}
           />
+          <label htmlFor="">to</label>
+          <DatePicker
+            selected={formData?.selectedDeliveryPeriodto}
+            onChange={handleDateChangeto}
+          />
+
         </TextContainer>
         <Dropdown
           label="Delivery Basis"
@@ -339,13 +435,17 @@ const ContractPage = () => {
             name="selectedDetentionDemurrageChargesPer"
           />
         </TextContainer>
-        <Dropdown
-          label="Other Terms"
-          options={["abc", "bcd", "cdf"]}
-          value={formData?.selectedOtherTerms}
-          onChange={handleChange}
-          name="selectedOtherTerms"
-        />
+        <div>
+          <label className="font-bold text-[13px]">Other Terms</label>
+          <textarea
+            value={text}
+            onChange={handleChangeText}
+            name="selectedOtherTerms"
+            rows={10} // You can adjust the number of rows as needed
+            cols={50} // You can adjust the number of columns as needed
+          />
+          <p>Words remaining: {maxWords - text.split(/\s+/).length}</p>
+        </div>
         <TextContainer>
           <Dropdown
             label="Applicable Rules"
@@ -354,18 +454,20 @@ const ContractPage = () => {
             onChange={handleChange}
             name="selectedApplicableRules"
           />
-          <Dropdown
+          <h3>Amendment</h3>
+          <input type="text" disabled />
+          {/* <TextInput
             label="Amendment"
-            options={["Arbitrade Arbitration", "abc", "bcd", "cdf"]} // Add "Default" as the first option
-            value={formData?.selectedAmendment || "Arbitrade Arbitration"} // Set the default value
-            onChange={handleChange}
-            name="selectedAmendment"
-          />
+          options={["Arbitrade Arbitration", "abc", "bcd", "cdf"]} // Add "Default" as the first option
+          value={formData?.selectedAmendment || "Arbitrade Arbitration"} // Set the default value
+          onChange={handleChange}
+          name="selectedAmendment"
+          /> */}
         </TextContainer>
 
         <TextInput
           label="Dispute Resolution"
-          value={formData?.selectedDisputeResolution}
+          value={formData?.selectedDisputeResolution || "Arbitrade Arbitration"}
           onChange={handleChange}
           name="selectedDisputeResolution"
         />
