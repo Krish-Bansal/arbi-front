@@ -43,6 +43,7 @@ const ContractPage = () => {
   const [formData, setFormData] = useState({
     selectedSeller: "",
     selectedSellerRepresentative: "",
+    selectedSellerEmail: "",
     selectedBuyer: "",
     selectedBuyerEmail: "",
     selectedBuyerRepresentative: "",
@@ -93,8 +94,10 @@ const ContractPage = () => {
     const userData = await axios.post(`${BASE_URL}/contract/create`, {
       seller: formData?.selectedSeller,
       sellerRepresentative: formData?.selectedSellerRepresentative,
+      sellerEmail: formData?.selectedSellerEmail,
       buyer: formData?.selectedBuyer,
       buyeremail: formData?.selectedBuyerEmail,
+      selleremail: formData?.selectedSellerEmail,
       buyerRepresentative: formData?.selectedBuyerRepresentative,
       commodity: formData?.selectedCommodity,
       qualityParameters: formData?.selectedQualityParameters,
@@ -205,8 +208,26 @@ const ContractPage = () => {
       // Handle any errors here
     }
   };
-  console.log(formData)
+  const handleChangeEmail2 = async (event) => {
+    const selectedValue = event.target.value;
+    try {
+      const response = await axios.post(`${BASE_URL}/contract/get-email`, { selectedValue });
+      // Assuming the response from the backend includes selectedBuyeremail
+      const selectedSelleremailFromBackend = response.data.selectedBuyeremail;
 
+      setFormData({
+        ...formData,
+        selectedSellerRepresentative: selectedValue,
+        selectedSellerEmail: selectedSelleremailFromBackend,
+      });
+      // const buyeremail = selectedBuyeremailFromBackend
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle any errors here
+    }
+  };
+
+  console.log(formData)
   const [selleroptions, setSellerOptions] = useState([]);
   const [authOptions, setAuthOptions] = useState([]);
   const [buyOptions, setbuyOptions] = useState([]);
@@ -267,7 +288,7 @@ const ContractPage = () => {
             label="Seller's Representative"
             options={authOptions}
             value={formData?.selectedSellerRepresentative}
-            onChange={handleChange}
+            onChange={handleChangeEmail2}
             name="selectedSellerRepresentative"
           />
         )}
