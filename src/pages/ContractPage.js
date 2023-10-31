@@ -127,7 +127,7 @@ const ContractPage = () => {
       MPIN: formData?.selectedMPIN
     }, { headers });
     if (userData) {
-      navigate('/status')
+      // navigate('/status')
     }
   };
 
@@ -266,13 +266,17 @@ const ContractPage = () => {
   const [text, setText] = useState('');
   const maxWords = 1000;
 
-  const handleChangeText = (event) => {
-    const inputText = event.target.value;
-    const words = inputText.trim().split(/\s+/);
+  const handleChangeText = (event, formData, setFormData, maxWords) => {
+    const { name, value } = event.target;
+    const words = value.trim().split(/\s+/);
     if (words.length <= maxWords) {
-      setText(inputText);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
     }
   };
+  console.log(formData?.selectedDeliveryPeriod)
   return (
     <AppContainer>
       <Form onSubmit={handleSubmit}>
@@ -459,13 +463,13 @@ const ContractPage = () => {
         <div>
           <label className="font-bold text-[13px]">Other Terms</label>
           <textarea
-            value={text}
-            onChange={handleChangeText}
+            value={formData?.selectedOtherTerms}
+            onChange={handleChange}
             name="selectedOtherTerms"
             rows={10} // You can adjust the number of rows as needed
             cols={50} // You can adjust the number of columns as needed
           />
-          <p>Words remaining: {maxWords - text.split(/\s+/).length}</p>
+          {/* <p>Words remaining: {maxWords - text.split(/\s+/).length}</p> */}
         </div>
         <TextContainer>
           <Dropdown

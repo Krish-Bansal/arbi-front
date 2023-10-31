@@ -24,7 +24,8 @@ import { OpenRoutes } from "./routing/OpenRoutes";
 import { PrivateAuth } from "./routing/PrivateAuth";
 import { PrivateAdmin } from "./routing/PrivateAdmin";
 import SetMPIN from "./pages/SetMpin";
-
+import PendingContractPage from "./pages/PendingContract";
+import ExecutedContractPage from "./pages/ExecutedContract";
 const HeaderContainer = styled.header`
   background-color: #f2f2f2;
   padding: 20px;
@@ -112,6 +113,10 @@ const App = () => {
               <RemoveUser />
             </PrivateAdmin>} />
             <Route path="/contract" element={<PrivateAuth><ContractPage /></PrivateAuth>} />
+            <Route path="/pending-contract" element={<PrivateAuth><PendingContractPage /></PrivateAuth>} />
+            <Route path="/executed-contract" element={<PrivateAuth><ExecutedContractPage /></PrivateAuth>} />
+
+
             <Route path="/status" element={<StatusPage />} />
             <Route path="/users" element={<ListOfUsers />} />
             <Route path="/user/email-verification" element={<EmailVerificationPage />} />

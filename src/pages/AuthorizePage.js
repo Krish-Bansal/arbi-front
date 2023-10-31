@@ -25,6 +25,12 @@ const AuthorizePage = () => {
   const handleClick = () => {
     navigate('/contract')
   }
+  const handleClick1 = () => {
+    navigate('/pending-contract')
+  }
+  const handleClick2 = () => {
+    navigate('/executed-contract')
+  }
   return (
     <>
       <ButtonContainer>
@@ -48,11 +54,13 @@ const AuthorizePage = () => {
       </ButtonContainer>
       <ButtonColumn>
         <DynamicButton
+          onClick={handleClick1}
           text="Contract Pending for Approval"
           backgroundColor="#808080"
           textColor="#ffffff"
         />
         <DynamicButton
+          onClick={handleClick2}
           text="Executed Contract"
           backgroundColor="#808080"
           textColor="#ffffff"

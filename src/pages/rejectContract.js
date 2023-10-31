@@ -14,7 +14,7 @@ function RejectContractPage() {
       setErrorMessage('');
       const response = await axios.post(`${BASE_URL}/contract/reject`, { password, contractnumber: lastSegment });
     } catch (error) {
-      setErrorMessage('Error Rejecting contract. Please check your password.');
+      setErrorMessage('Error Rejecting contract. Please check your mPIN.');
     } finally {
       setLoading(false);
     }
@@ -22,10 +22,10 @@ function RejectContractPage() {
 
   return (
     <div>
-      <h1>Enter Password to Reject Contract</h1>
+      <h1>Enter mPIN to Reject Contract</h1>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="mPIN"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
