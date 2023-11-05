@@ -4,8 +4,10 @@ import TextInput, { TextInputLabel } from "../components/Molecules/TextInput";
 import Dropdown from "../components/Molecules/Dropdown/Dropdown";
 import axios from "axios";
 import { BASE_URL } from "../utils/requestMethod";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from "react-router-dom";
 import CustomDropdown from "../components/Molecules/Dropdown/CustomDropDown";
 const AppContainer = styled.div`
@@ -38,6 +40,34 @@ const TextContainer = styled.div`
 `;
 
 const ContractPage = () => {
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate1, setSelectedDate1] = useState(null);
+
+
+  const handleDateChange = (date) => {
+    const year = date?.getFullYear();
+    const month = date?.getMonth();
+    const day = date?.getDate();
+    setSelectedDate(date)
+    // Create a new Date object with the time set to midnight
+    const selectedDate = new Date(year, month, day + 1);
+
+    // Now selectedDate will be set to the date without any time component
+    console.log(selectedDate);
+    setFormData({ ...formData, selectedDeliveryPeriod: selectedDate });
+  };
+  const handleDateChangeto = (date) => {
+    const year = date?.getFullYear();
+    const month = date?.getMonth();
+    const day = date?.getDate();
+    setSelectedDate1(date)
+    // Create a new Date object with the time set to midnight
+    const selectedDate = new Date(year, month, day + 1);
+    // Now selectedDate will be set to the date without any time component
+    // console.log(selectedDate);
+    setFormData({ ...formData, selectedDeliveryPeriodto: selectedDate });
+  };
   const navigate = useNavigate()
   const [contractData, setContractData] = useState([]);
   const [formData, setFormData] = useState({
@@ -74,12 +104,12 @@ const ContractPage = () => {
     selectedMPIN: "",
   });
   // console.log(formData)
-  const handleDateChange = (date) => {
-    setFormData({ ...formData, selectedDeliveryPeriod: date });
-  };
-  const handleDateChangeto = (date) => {
-    setFormData({ ...formData, selectedDeliveryPeriodto: date });
-  };
+  // const handleDateChange = (date) => {
+  //   setFormData({ ...formData, selectedDeliveryPeriod: date });
+  // };
+  // const handleDateChangeto = (date) => {
+  //   setFormData({ ...formData, selectedDeliveryPeriodto: date });
+  // };
   // Event handler for form submission
   const handleSubmit = async (e) => {
     const token = localStorage.getItem('auth');
@@ -89,7 +119,7 @@ const ContractPage = () => {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-
+    console.log(selectedDate)
     e.preventDefault();
     const userData = await axios.post(`${BASE_URL}/contract/create`, {
       seller: formData?.selectedSeller,
@@ -392,12 +422,12 @@ const ContractPage = () => {
           <label>Delivery Period</label>
           <label htmlFor="">From</label>
           <DatePicker
-            selected={formData?.selectedDeliveryPeriod}
+            selected={selectedDate}
             onChange={handleDateChange}
           />
           <label htmlFor="">to</label>
           <DatePicker
-            selected={formData?.selectedDeliveryPeriodto}
+            selected={selectedDate1}
             onChange={handleDateChangeto}
           />
 
