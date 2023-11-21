@@ -116,7 +116,7 @@ function AdduserPage() {
         <label htmlFor="nickName">Nick Name, if any:</label>
         <Input type="text" id="nickName" name="nickName" onChange={handleChange} />
       </InputContainer>
-      <InputContainer>
+      {/* <InputContainer>
         <label htmlFor="authorityLetter">Authority Letter :</label>
         <ImageUploadContainer>
           <ImageUploadInput
@@ -131,7 +131,7 @@ function AdduserPage() {
           </ImageUploadLabel>
           <span>{gstImage}</span>
         </ImageUploadContainer>
-      </InputContainer>
+      </InputContainer> */}
       <Button type="submit">Submit</Button>
     </Form>
   );

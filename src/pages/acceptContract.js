@@ -12,7 +12,14 @@ function AcceptContractPage() {
     try {
       setLoading(true);
       setErrorMessage('');
-      const response = await axios.post(`${BASE_URL}/contract/accept`, { password, contractnumber: lastSegment });
+      const token = localStorage.getItem('auth');
+
+
+      // Set the Authorization header with the token
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.post(`${BASE_URL}/contract/accept`, { password, contractnumber: lastSegment }, { headers });
     } catch (error) {
       setErrorMessage('Error accepting contract. Please check your password.');
     } finally {

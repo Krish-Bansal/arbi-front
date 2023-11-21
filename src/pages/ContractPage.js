@@ -126,9 +126,9 @@ const ContractPage = () => {
       disputeResolution: formData?.selectedDisputeResolution,
       MPIN: formData?.selectedMPIN
     }, { headers });
-    if (userData) {
-      navigate('/status')
-    }
+    // if (userData) {
+    //   navigate('/status')
+    // }
   };
 
   // Event handlers for changes
@@ -265,14 +265,18 @@ const ContractPage = () => {
   // };
   const [text, setText] = useState('');
   const maxWords = 1000;
-
   const handleChangeText = (event) => {
     const inputText = event.target.value;
     const words = inputText.trim().split(/\s+/);
     if (words.length <= maxWords) {
       setText(inputText);
+      setFormData({
+        ...formData,
+        selectedOtherTerms: inputText, // Update selectedOtherTerms in formData
+      });
     }
   };
+  console.log(formData)
   return (
     <AppContainer>
       <Form onSubmit={handleSubmit}>

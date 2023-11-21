@@ -79,12 +79,12 @@ const SignupForm = () => {
     pan: "",
     entity: "",
     gst: "",
-    register: "",
+    register: "1",
     nameOfEntity: "",
     typeOfEntity: "",
     landmark: "",
     city: "",
-    state: "",
+    state: "10",
     pin: "",
     mobileNumber: "",
     whatsAppNumber: "",
@@ -96,7 +96,7 @@ const SignupForm = () => {
   const [attchment, setAttachment] = useState({ pan: "", entity: "", gst: "" });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  console.log(attchmentData)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -191,7 +191,7 @@ const SignupForm = () => {
                 </option>
               );
             })}
-          </Select>{" "}
+          </Select>{""}
         </FormRow>
 
         <FormRow>
@@ -257,28 +257,31 @@ const SignupForm = () => {
             onChange={handleSetUpChange}
           />
         </FormRow>
-        <GSTComponent
-          labelText="GSTIN"
-          placeholderText="Enter GSTIN Number"
-          name="gst"
-          getTheNormalData={onGetNormaData}
-          getTheEachFileData={onGetData}
-        />
-        <GSTComponent
+        <FormRow>
+          <Label>GST In</Label>
+          <TextInput
+            labelText="GSTIN"
+            placeholderText="Enter GSTIN Number"
+            name="gst"
+            getTheNormalData={onGetNormaData}
+            getTheEachFileData={onGetData}
+          />
+        </FormRow>
+        {/* <GSTComponent
           labelText="PAN"
           placeholderText="Enter PAN Number"
           name="pan"
           getTheNormalData={onGetNormaData}
           getTheEachFileData={onGetData}
-        />
-        <GSTComponent
+        /> */}
+        {/* <GSTComponent
           labelText="Entity Legal Entity Registration No"
           placeholderText=""
           name="entity"
           getTheEachFileData={onGetData}
           getTheNormalData={onGetNormaData}
-        />
-        <FormRow>
+        /> */}
+        {/* <FormRow>
           <Label>Create User Id:</Label>
           <TextInput
             type="text"
@@ -287,7 +290,7 @@ const SignupForm = () => {
             value={attchmentData?.userId}
             onChange={handleSetUpChange}
           />
-        </FormRow>
+        </FormRow> */}
         <FormRow>
           <Label>Create Password:</Label>
           <TextInput

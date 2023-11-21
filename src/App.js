@@ -77,25 +77,25 @@ const App = () => {
       <SnackbarProvider>
         <HeaderContainer>
           <Nav>
-            <OpenRoutes>
-              <NavLinks>
-                <NavLink>
-                  <a href="/">Home</a>
-                </NavLink>
-                <NavLink>
-                  <a href="/about">About Us</a>
-                </NavLink>
-                <NavLink>
-                  <a href="/rules">Rules</a>
-                </NavLink>
-                <NavLink>
-                  <a href="/contact">Contact Us</a>
-                </NavLink>
-                <NavLink>
-                  <a href="/login">Sign In/Sign Up</a>
-                </NavLink>
-              </NavLinks>
-            </OpenRoutes>
+            {/* <OpenRoutes> */}
+            <NavLinks>
+              <NavLink>
+                <a href="/">Home</a>
+              </NavLink>
+              <NavLink>
+                <a href="/about">About Us</a>
+              </NavLink>
+              <NavLink>
+                <a href="/rules">Rules</a>
+              </NavLink>
+              <NavLink>
+                <a href="/contact">Contact Us</a>
+              </NavLink>
+              <NavLink>
+                <a href="/login">Sign In/Sign Up</a>
+              </NavLink>
+            </NavLinks>
+            {/* </OpenRoutes> */}
             {/* <SignInUpButton>Sign In/Sign Up</SignInUpButton> */}
           </Nav>
         </HeaderContainer>

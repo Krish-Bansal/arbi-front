@@ -33,7 +33,7 @@ const states = [
 const registerData = [
   { key: "Trader", value: 1 },
   { key: "Broker", value: 2 },
-  { key: "Both Trader and Broker", value: 3 },
+  // { key: "Both Trader and Broker", value: 3 },
 ];
 
 const typeEntity = [
