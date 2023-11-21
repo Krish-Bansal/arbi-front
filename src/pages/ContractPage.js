@@ -126,9 +126,9 @@ const ContractPage = () => {
       disputeResolution: formData?.selectedDisputeResolution,
       MPIN: formData?.selectedMPIN
     }, { headers });
-    // if (userData) {
-    //   navigate('/status')
-    // }
+    if (userData) {
+      navigate('/status')
+    }
   };
 
   // Event handlers for changes
