@@ -38,6 +38,8 @@ const TextContainer = styled.div`
 `;
 
 const ContractPage = () => {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate1, setSelectedDate1] = useState(null);
   const navigate = useNavigate()
   const [contractData, setContractData] = useState([]);
   const [formData, setFormData] = useState({
@@ -73,18 +75,35 @@ const ContractPage = () => {
     selectedDisputeResolution: "",
     selectedMPIN: "",
   });
+
   // console.log(formData)
   const handleDateChange = (date) => {
-    setFormData({ ...formData, selectedDeliveryPeriod: date });
+    const year = date?.getFullYear();
+    const month = date?.getMonth();
+    const day = date?.getDate();
+    setSelectedDate(date)
+    // Create a new Date object with the time set to midnight
+    const selectedDate = new Date(year, month, day + 1);
+
+    // Now selectedDate will be set to the date without any time component
+    console.log(selectedDate);
+    setFormData({ ...formData, selectedDeliveryPeriod: selectedDate });
   };
   const handleDateChangeto = (date) => {
-    setFormData({ ...formData, selectedDeliveryPeriodto: date });
+    const year = date?.getFullYear();
+    const month = date?.getMonth();
+    const day = date?.getDate();
+    setSelectedDate1(date)
+
+    // Create a new Date object with the time set to midnight
+    const selectedDate = new Date(year, month, day + 1);
+    // Now selectedDate will be set to the date without any time component
+    // console.log(selectedDate);
+    setFormData({ ...formData, selectedDeliveryPeriodto: selectedDate });
   };
   // Event handler for form submission
   const handleSubmit = async (e) => {
     const token = localStorage.getItem('auth');
-
-
     // Set the Authorization header with the token
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -392,12 +411,12 @@ const ContractPage = () => {
           <label>Delivery Period</label>
           <label htmlFor="">From</label>
           <DatePicker
-            selected={formData?.selectedDeliveryPeriod}
+            selected={selectedDate}
             onChange={handleDateChange}
           />
           <label htmlFor="">to</label>
           <DatePicker
-            selected={formData?.selectedDeliveryPeriodto}
+            selected={selectedDate1}
             onChange={handleDateChangeto}
           />
 
