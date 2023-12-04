@@ -101,6 +101,7 @@ const ContractPage = () => {
     // console.log(selectedDate);
     setFormData({ ...formData, selectedDeliveryPeriodto: selectedDate });
   };
+  const [submitStatus, setSubmitStatus] = useState('idle');
   // Event handler for form submission
   const handleSubmit = async (e) => {
     const token = localStorage.getItem('auth');
@@ -110,45 +111,64 @@ const ContractPage = () => {
     };
 
     e.preventDefault();
-    const userData = await axios.post(`${BASE_URL}/contract/create`, {
-      seller: formData?.selectedSeller,
-      sellerRepresentative: formData?.selectedSellerRepresentative,
-      sellerEmail: formData?.selectedSellerEmail,
-      buyer: formData?.selectedBuyer,
-      buyeremail: formData?.selectedBuyerEmail,
-      selleremail: formData?.selectedSellerEmail,
-      buyerRepresentative: formData?.selectedBuyerRepresentative,
-      commodity: formData?.selectedCommodity,
-      qualityParameters: formData?.selectedQualityParameters,
-      rebateSchedule: formData?.selectedRebateSchedule,
-      volume: formData?.selectedVolume,
-      volumePerIns: formData?.selectedVolumePer,
-      volumeRate: formData?.selectedVolumePerQuan,
-      incoterm: formData?.selectedIncoterm,
-      origin: formData?.selectedOrigin,
-      destination: formData?.selectedDestination,
-      modeOfTransport: formData?.selectedModeofTransport,
-      deliveryPeriod: formData?.selectedDeliveryPeriod,
-      deliveryPeriodto: formData?.selectedDeliveryPeriodto,
-      deliveryBasis: formData?.selectedDeliveryBasis,
-      price: formData?.selectedPrice,
-      pricePerIns: formData?.selectedPricePer,
-      paymentTerm: formData?.selectedPaymentTerm,
-      freeTime: formData?.selectedFreeTime,
-      freeTimePerIns: formData?.selectedFreeTimePer,
-      detentionOrDemurrageCharges: formData?.selectedDetentionDemurrageCharges,
-      detentionOrDemurrageChargesPerIns:
-        formData?.selectedDetentionDemurrageChargesPer,
-      otherTerms: formData?.selectedOtherTerms,
-      applicableRules: formData?.selectedApplicableRules,
-      Amendment: formData?.selectedAmendment,
-      disputeResolution: formData?.selectedDisputeResolution,
-      MPIN: formData?.selectedMPIN
-    }, { headers });
-    if (userData) {
-      navigate('/status')
+    setSubmitStatus('submitting');
+    try {
+      const userData = await axios.post(`${BASE_URL}/contract/create`, {
+        seller: formData?.selectedSeller,
+        sellerRepresentative: formData?.selectedSellerRepresentative,
+        sellerEmail: formData?.selectedSellerEmail,
+        buyer: formData?.selectedBuyer,
+        buyeremail: formData?.selectedBuyerEmail,
+        selleremail: formData?.selectedSellerEmail,
+        buyerRepresentative: formData?.selectedBuyerRepresentative,
+        commodity: formData?.selectedCommodity,
+        qualityParameters: formData?.selectedQualityParameters,
+        rebateSchedule: formData?.selectedRebateSchedule,
+        volume: formData?.selectedVolume,
+        volumePerIns: formData?.selectedVolumePer,
+        volumeRate: formData?.selectedVolumePerQuan,
+        incoterm: formData?.selectedIncoterm,
+        origin: formData?.selectedOrigin,
+        destination: formData?.selectedDestination,
+        modeOfTransport: formData?.selectedModeofTransport,
+        deliveryPeriod: formData?.selectedDeliveryPeriod,
+        deliveryPeriodto: formData?.selectedDeliveryPeriodto,
+        deliveryBasis: formData?.selectedDeliveryBasis,
+        price: formData?.selectedPrice,
+        pricePerIns: formData?.selectedPricePer,
+        paymentTerm: formData?.selectedPaymentTerm,
+        freeTime: formData?.selectedFreeTime,
+        freeTimePerIns: formData?.selectedFreeTimePer,
+        detentionOrDemurrageCharges: formData?.selectedDetentionDemurrageCharges,
+        detentionOrDemurrageChargesPerIns:
+          formData?.selectedDetentionDemurrageChargesPer,
+        otherTerms: formData?.selectedOtherTerms,
+        applicableRules: formData?.selectedApplicableRules,
+        Amendment: formData?.selectedAmendment,
+        disputeResolution: formData?.selectedDisputeResolution,
+        MPIN: formData?.selectedMPIN
+      }, { headers });
+      setTimeout(() => {
+        setSubmitStatus('submitted');
+      }, 2000);
+      // if (userData) {
+      //   navigate('/status')
+      // }
+
+    } catch (error) {
+      setSubmitStatus('error')
     }
+
   };
+  let buttonText = 'Submit';
+  if (submitStatus === 'submitting') {
+    buttonText = 'Submitting...';
+  } else if (submitStatus === 'submitted') {
+    buttonText = 'Submitted!';
+  } else if (submitStatus === 'error') {
+    buttonText = 'Error! Retry';
+  }
+
 
   // Event handlers for changes
   const handleChange = (event) => {
@@ -337,7 +357,7 @@ const ContractPage = () => {
             name="selectedBuyerRepresentative"
           />
         )}
-        <CustomDropdown
+        <Dropdown
           label="Commodity"
           options={["Arhar Whole(Red Gram)", "Moong Whole(Green Gram)", "Masoor Whole(Lentil)", "Urad Whole(Black Gram)", "Wheat", "Wheat", "Wheat", "Maize/Corn", "Chana (Bengal Gram)", "Bajra(Pearl Millet)", "Barley(Jau)", "Jowar", "Dhan(Paddy)", "Rajma(Kidney Beans)", "Ragi(Finge Millet)", "Lobia (Cowpea)", "Rice", "Mustard Seed", "Soyabean", "Jaggery", "Arhar Pulses", "Masoor Pulses", "Moong Pulse", "Urad Pulse"]}
           value={formData?.selectedCommodity}
@@ -345,12 +365,13 @@ const ContractPage = () => {
           name="selectedCommodity"
         />
 
-        <CustomDropdown
+        <Dropdown
           label="Quality Parameters"
-          options={["Quality1", "Quality2", "Quality3"]}
+          options={[]}
           value={formData?.selectedQualityParameters}
           onChange={handleChange}
           name="selectedQualityParameters"
+          disabled={true}
         />
         <Dropdown
           label="Rebate Schedule"
@@ -358,6 +379,7 @@ const ContractPage = () => {
           value={formData?.selectedRebateSchedule}
           onChange={handleChange}
           name="selectedRebateSchedule"
+          disabled={true}
         />
         <TextContainer>
           <TextInput
@@ -527,7 +549,10 @@ const ContractPage = () => {
           onChange={handleChange}
           name="selectedMPIN"
         />
-        <SubmitButton type="submit">Submit</SubmitButton>
+        <SubmitButton type="submit" disabled={submitStatus === 'submitting'}>
+          {buttonText}
+        </SubmitButton>
+        {submitStatus === 'error' && <div>Error occurred while submitting. Please try again.</div>}
       </Form>
     </AppContainer>
   );

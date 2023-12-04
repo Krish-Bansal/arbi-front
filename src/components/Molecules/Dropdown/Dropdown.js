@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const DropdownContainer = styled.div`
   display: flex;
-  /* flex-direction: column; */
   gap: 20px;
 `;
 
@@ -16,24 +15,33 @@ const Label = styled.label`
 const Select = styled.select`
   padding: 8px;
   font-size: 14px;
+  ${(props) =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+      pointer-events: none;
+    `}
 `;
 
 const Option = styled.option``;
 
-const Dropdown = ({ label, options, value, onChange, name }) => {
+const Dropdown = ({ label, options, value, onChange, name, disabled }) => {
   return (
     <DropdownContainer>
       <Label>{label}</Label>
-      <Select value={value} onChange={onChange} name={name}>
+      <Select value={value} onChange={onChange} name={name} disabled={disabled}>
         <option value="">Select an option</option>
-        {options && options.length > 0
-          ? options.map((option, index) => (
+        {options && options.length > 0 ? (
+          options.map((option, index) => (
             <option key={index} value={option}>
               {option}
             </option>
           ))
-          : <option value="" disabled>No sellers available</option>
-        }
+        ) : (
+          <option value="" disabled>
+            No sellers available
+          </option>
+        )}
       </Select>
     </DropdownContainer>
   );

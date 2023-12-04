@@ -29,10 +29,10 @@ function AcceptContractPage() {
 
   return (
     <div>
-      <h1>Enter Password to Accept Contract</h1>
+      <h1>Enter Mpin to Accept Contract</h1>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Mpin"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
